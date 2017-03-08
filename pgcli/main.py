@@ -817,13 +817,15 @@ def obfuscate_process_password():
 
 def format_output(title, cur, headers, status, settings):
     output = []
-    missingval = settings.get('missingval', '<null>')
-    table_format = settings['table_format']
-    dcmlfmt = settings['dcmlfmt']
-    floatfmt = settings['floatfmt']
-    expanded = settings.get('expanded', False)
-    max_width = settings.get('max_width', None)
+    missingval = settings.pop('missingval', '<null>')
+    table_format = settings.pop('table_format')
+    dcmlfmt = settings.pop('dcmlfmt')
+    floatfmt = settings.pop('floatfmt')
+    expanded = settings.pop('expanded', False)
+    max_width = settings.pop('max_width', None)
     case_function = settings.pop('case_function', lambda x: x)
+    if settings:
+        raise ValueError('settings contained an unexpected value')
     if title:  # Only print the title if it's not None.
         output.append(title)
     if cur:

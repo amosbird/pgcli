@@ -56,7 +56,7 @@ def test_format_output():
 def test_format_output_auto_expand():
     settings = {'table_format': 'psql', 'dcmlfmt':'d', 'floatfmt': 'g', 'max_width': 100}
     table_results = format_output('Title', [('abc', 'def')],
-                                  ['head1', 'head2'], 'test status', settings)
+                                  ['head1', 'head2'], 'test status', settings.copy())
     table = ['Title', '+---------+---------+\n| head1   | head2   |\n|---------+---------|\n| abc     | def     |\n+---------+---------+', 'test status']
     assert table_results == table
     settings['max_width'] = 1
