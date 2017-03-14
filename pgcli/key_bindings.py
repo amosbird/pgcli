@@ -62,7 +62,7 @@ def pgcli_bindings(get_vi_mode_enabled, set_vi_mode_enabled):
         else:
             event.cli.start_completion(select_first=True)
 
-    @key_binding_manager.registry.add_binding(Keys.ControlSpace)
+    @key_binding_manager.registry.add_binding(Keys.ControlJ)
     def _(event):
         """
         Initialize autocompletion at cursor.
@@ -72,20 +72,30 @@ def pgcli_bindings(get_vi_mode_enabled, set_vi_mode_enabled):
 
         If the menu is showing, select the next completion.
         """
-        _logger.debug('Detected <C-Space> key.')
+        _logger.debug('Detected <C-J> key.')
 
         b = event.cli.current_buffer
         if b.complete_state:
             b.complete_next()
         else:
-            event.cli.start_completion(select_first=False)
-
-    @key_binding_manager.registry.add_binding(Keys.ControlJ, filter=HasSelectedCompletion())
+            event.cli.start_completion(select_first=True)
+            
+    @key_binding_manager.registry.add_binding(Keys.ControlK, filter=HasSelectedCompletion())
     def _(event):
         """
         Makes the enter key work as the tab key only when showing the menu.
         """
-        _logger.debug('Detected <C-J> key.')
+        _logger.debug('Detected <C-K> key.')
+        
+        b = event.cli.current_buffer
+        b.complete_prev()
+        
+    @key_binding_manager.registry.add_binding(Keys.ControlL, filter=HasSelectedCompletion())
+    def _(event):
+        """
+        Makes the enter key work as the tab key only when showing the menu.
+        """
+        _logger.debug('Detected <C-L> key.')
 
         event.current_buffer.complete_state = None
         b = event.cli.current_buffer
